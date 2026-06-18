@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LibrasWidget — Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0f17;
+      --surface: #1a1a2e;
+      --surface2: #22223a;
+      --border: rgba(255,255,255,0.08);
+      --accent: #a813f7;
+      --accent2: #5c09ab;
+      --text: #e8e8f0;
+      --text-muted: rgba(232,232,240,0.5);
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Header ──────────────────────────────────────────── */
+    header {
+      border-bottom: 1px solid var(--border);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: rgba(26,26,46,0.8);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    header h1 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    header span {
+      font-size: 0.75rem;
+      background: rgba(168,19,247,0.2);
+      color: #d07aff;
+      border: 1px solid rgba(168,19,247,0.3);
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    /* ── Layout ──────────────────────────────────────────── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 24px 120px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .hero h2 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.2;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #e8e8f0 0%, #a813f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── Seções ──────────────────────────────────────────── */
+    section {
+      margin-bottom: 40px;
+    }
+
+    section h3 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    /* ── Card de código ──────────────────────────────────── */
+    .code-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      overflow-x: auto;
+    }
+
+    .code-block pre {
+      font-family: 'Fira Code', 'Cascadia Code', monospace;
+      font-size: 0.85rem;
+      color: #c9d1d9;
+      line-height: 1.7;
+      white-space: pre;
+    }
+
+    .code-block .kw  { color: #ff79c6; }
+    .code-block .str { color: #f1fa8c; }
+    .code-block .cmt { color: #6272a4; }
+    .code-block .fn  { color: #50fa7b; }
+    .code-block .num { color: #bd93f9; }
+
+    /* ── Demo chat ───────────────────────────────────────── */
+    .chat-demo {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .chat-demo .label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    #chat-messages {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 100px;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .msg {
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.92rem;
+      line-height: 1.6;
+      max-width: 80%;
+    }
+
+    .msg.bot {
+      background: linear-gradient(135deg, rgba(168,19,247,0.15), rgba(92,9,171,0.1));
+      border: 1px solid rgba(168,19,247,0.2);
+      align-self: flex-start;
+    }
+
+    .msg.user {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      align-self: flex-end;
+      text-align: right;
+    }
+
+    .chat-controls {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* ── Botões ──────────────────────────────────────────── */
+    .btn {
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: none;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+    }
+
+    .btn:hover { transform: translateY(-1px); opacity: 0.9; }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: white;
+      box-shadow: 0 4px 14px rgba(168,19,247,0.35);
+    }
+
+    .btn-secondary {
+      background: var(--surface2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    /* ── Config playground ───────────────────────────────── */
+    .config-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .config-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+
+    .config-item label {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .config-item input[type="color"] {
+      width: 100%;
+      height: 40px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background: none;
+    }
+
+    .config-item select {
+      width: 100%;
+      padding: 8px 10px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      font-size: 0.875rem;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── Features ────────────────────────────────────────── */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .feature-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .feature-card .icon {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    .feature-card h4 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .feature-card p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    @media (max-width: 600px) {
+      .features { grid-template-columns: 1fr; }
+      .config-grid { grid-template-columns: 1fr; }
+      .hero h2 { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">🤟</div>
+  <h1>LibrasWidget</h1>
+  <span>v1.0.0</span>
+</header>
+
+<main>
+  <!-- Hero -->
+  <div class="hero">
+    <h2>Widget overlay de LIBRAS<br/>para qualquer site</h2>
+    <p>Adicione tradução automática para Língua Brasileira de Sinais em qualquer aplicação web com uma linha de código. Powered by VLibras.</p>
+  </div>
+
+  <!-- Features -->
+  <section>
+    <h3>Funcionalidades</h3>
+    <div class="features">
+      <div class="feature-card">
+        <div class="icon">🎯</div>
+        <h4>Shadow DOM isolado</h4>
+        <p>Estilos completamente isolados — não interfere com o CSS da página host.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">👁️</div>
+        <h4>MutationObserver</h4>
+        <p>Detecta novos elementos no DOM e traduz automaticamente quando configurado.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon">⚡</div>
+        <h4>API programática</h4>
+        <p><code>widget.translate("texto")</code> — chame quando quiser após qualquer evento.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Demo chat -->
+  <section>
+    <h3>Demo — Auto-tradução de chat</h3>
+    <div class="chat-demo">
+      <div class="label">Simule uma conversa — as mensagens do bot serão traduzidas automaticamente:</div>
+      <div id="chat-messages">
+        <div class="msg bot">Olá! Sou a Diversa, sua assistente de Educação Inclusiva. Como posso ajudar?</div>
+      </div>
+      <div class="chat-controls">
+        <button class="btn btn-primary" id="btn-bot-msg">Adicionar mensagem do bot 🤖</button>
+        <button class="btn btn-secondary" id="btn-translate-manual">Traduzir manualmente</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Instalação -->
+  <section>
+    <h3>Instalação</h3>
+    <div class="code-block">
+<pre><span class="cmt">&lt;!-- 1. Adicione antes de &lt;/body&gt; --&gt;</span>
+<span class="kw">&lt;script</span> src=<span class="str">"libras-widget.umd.cjs"</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script&gt;</span>
+  <span class="cmt">// 2. Inicialize com suas opções</span>
+  <span class="kw">const</span> widget = <span class="kw">new</span> <span class="fn">LibrasWidget</span>({
+    position:     <span class="str">'bottom-right'</span>,   <span class="cmt">// bottom-right | bottom-left | top-right | top-left</span>
+    color:        <span class="str">'#a813f7'</span>,         <span class="cmt">// cor do botão</span>
+    watchSelector:<span class="str">'.bot-message'</span>,    <span class="cmt">// auto-traduz esses elementos quando aparecerem</span>
+    autoTranslate: <span class="num">true</span>,
+  });
+
+  <span class="cmt">// 3. Ou chame manualmente (ex: ao receber resposta de uma API)</span>
+  widget.<span class="fn">translate</span>(<span class="str">"Texto a ser traduzido para LIBRAS"</span>);
+<span class="kw">&lt;/script&gt;</span></pre>
+    </div>
+  </section>
+
+  <!-- Integração Diversa AI -->
+  <section>
+    <h3>Integração com Diversa AI</h3>
+    <div class="code-block">
+<pre><span class="cmt">// Em App.jsx — após o SSE terminar de stremar uma resposta:</span>
+<span class="kw">import</span> { useEffect, useRef } <span class="kw">from</span> <span class="str">'react'</span>;
+
+<span class="kw">const</span> libras = <span class="kw">new</span> <span class="fn">LibrasWidget</span>({
+  color: <span class="str">'#a813f7'</span>,
+  watchSelector: <span class="str">'.bot-message'</span>,  <span class="cmt">// classe das mensagens do bot no Diversa AI</span>
+});
+
+<span class="cmt">// Ou manual, ao fechar o stream SSE:</span>
+eventSource.addEventListener(<span class="str">'done'</span>, () =&gt; {
+  libras.<span class="fn">translate</span>(textoCompleto);
+});</pre>
+    </div>
+  </section>
+</main>
+
+<!-- Inicializa o widget nesta própria demo -->
+<script type="module">
+  import LibrasWidget from '/src/index.js';
+
+  // Inicializa o widget com auto-tradução das mensagens .bot
+  const widget = new LibrasWidget({
+    color: '#a813f7',
+    position: 'bottom-right',
+    watchSelector: '.msg.bot',
+    autoTranslate: true,
+    autoTranslateDelay: 600,
+  });
+
+  // Expõe globalmente para os botões da demo
+  window._demo_widget = widget;
+
+  // Botão: adiciona mensagem do bot (dispara o MutationObserver)
+  const respostas = [
+    'O TEA (Transtorno do Espectro Autista) é uma condição do neurodesenvolvimento que afeta a comunicação e o comportamento social.',
+    'A LBI (Lei Brasileira de Inclusão) garante o direito à educação inclusiva em todos os níveis de ensino.',
+    'O AEE (Atendimento Educacional Especializado) é um serviço complementar ou suplementar à escolarização regular.',
+    'Tecnologia assistiva inclui qualquer recurso que aumente, mantenha ou melhore as capacidades de pessoas com deficiência.',
+    'Adaptações curriculares são ajustes feitos no currículo para atender às necessidades dos alunos com deficiência.',
+  ];
+  let msgIndex = 0;
+
+  document.getElementById('btn-bot-msg').addEventListener('click', () => {
+    const msgs = document.getElementById('chat-messages');
+    const div = document.createElement('div');
+    div.className = 'msg bot';
+    div.textContent = respostas[msgIndex % respostas.length];
+    msgs.appendChild(div);
+    msgs.scrollTop = msgs.scrollHeight;
+    msgIndex++;
+  });
+
+  // Botão: tradução manual
+  document.getElementById('btn-translate-manual').addEventListener('click', () => {
+    widget.translate('Esta é uma tradução manual para LIBRAS acionada via API programática do LibrasWidget.');
+  });
+</script>
+
+</body>
+</html>
