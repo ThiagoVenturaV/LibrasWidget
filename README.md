@@ -6,7 +6,7 @@ Widget overlay de acessibilidade em **LIBRAS** para qualquer site — sem depend
 
 ## O que é
 
-LibrasWidget é um script JavaScript que adiciona um botão flutuante customizável em qualquer página web. Ao ser ativado, exibe o avatar do VLibras e traduz o conteúdo da página para Língua Brasileira de Sinais (LIBRAS).
+LibrasWidget é um script JavaScript que integra o widget oficial do VLibras em qualquer página web e adiciona facilidades como uma API de tradução programática e um observador de mutações (MutationObserver) para traduzir novos elementos no DOM automaticamente.
 
 O LibrasWidget oferece:
 
@@ -56,7 +56,7 @@ new LibrasWidget({
 
 ### `widget.translate(texto)`
 
-Traduz um texto específico para LIBRAS. Abre o painel automaticamente se estiver fechado.
+Traduz um texto específico para LIBRAS. O painel deve ser ativado pelo usuário clicando no ícone do VLibras.
 
 ```js
 const widget = new LibrasWidget();
