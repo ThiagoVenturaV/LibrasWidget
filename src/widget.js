@@ -105,9 +105,6 @@ export class Widget {
     }
     if (!texto?.trim()) return;
 
-    // Garante que o painel está aberto
-    openVLibrasPanel();
-
     translate(texto);
   }
 
