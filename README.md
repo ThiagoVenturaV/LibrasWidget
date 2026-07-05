@@ -8,13 +8,12 @@ Widget overlay de acessibilidade em **LIBRAS** para qualquer site — sem depend
 
 LibrasWidget é um script JavaScript que adiciona um botão flutuante customizável em qualquer página web. Ao ser ativado, exibe o avatar do VLibras e traduz o conteúdo da página para Língua Brasileira de Sinais (LIBRAS).
 
-Diferente do widget padrão do VLibras, o LibrasWidget oferece:
+O LibrasWidget oferece:
 
-- **UI customizável** — cor, posição e aparência do botão
+- **Botão oficial do VLibras** — com o ícone padrão e animação nativa
 - **API programática** — chame `widget.translate("texto")` a qualquer momento
 - **MutationObserver** — detecta novos elementos no DOM e traduz automaticamente (ideal para chats e SPAs)
-- **Shadow DOM** — estilos completamente isolados da página host
-- **Zero dependências** — bundle único e self-contained (~5KB gzip)
+- **Zero dependências** — bundle único e self-contained (~4KB gzip)
 
 ---
 
@@ -26,7 +25,7 @@ Diferente do widget padrão do VLibras, o LibrasWidget oferece:
 <!-- Adicione antes do </body> -->
 <script src="libras-widget.umd.cjs"></script>
 <script>
-  new LibrasWidget({ color: '#a813f7' });
+  new LibrasWidget({ position: 'bottom-right' });
 </script>
 ```
 
@@ -35,7 +34,7 @@ Diferente do widget padrão do VLibras, o LibrasWidget oferece:
 ```js
 import LibrasWidget from './libras-widget.js';
 
-new LibrasWidget({ color: '#a813f7' });
+new LibrasWidget({ position: 'bottom-right' });
 ```
 
 ---
@@ -45,7 +44,6 @@ new LibrasWidget({ color: '#a813f7' });
 ```js
 new LibrasWidget({
   position:           'bottom-right', // 'bottom-right' | 'bottom-left' | 'top-right' | 'top-left'
-  color:              '#0078d4',      // cor do botão (hex, hsl, rgb — qualquer valor CSS válido)
   watchSelector:      null,           // seletor CSS para auto-tradução de novos elementos
   autoTranslate:      true,           // traduz automaticamente quando watchSelector detecta elemento novo
   autoTranslateDelay: 400,            // delay (ms) antes de traduzir o elemento detectado
@@ -61,7 +59,7 @@ new LibrasWidget({
 Traduz um texto específico para LIBRAS. Abre o painel automaticamente se estiver fechado.
 
 ```js
-const widget = new LibrasWidget({ color: '#a813f7' });
+const widget = new LibrasWidget();
 
 widget.translate('Ola! Esta mensagem sera traduzida para LIBRAS.');
 ```
@@ -84,7 +82,6 @@ Toda vez que um elemento `.bot-message` for adicionado ao DOM, o widget detecta 
 
 ```js
 new LibrasWidget({
-  color:         '#a813f7',
   watchSelector: '.bot-message',
   autoTranslate: true,
 });
@@ -95,7 +92,7 @@ new LibrasWidget({
 Ideal para chats com IA que streamam tokens — traduz ao receber o evento de conclusão:
 
 ```js
-const widget = new LibrasWidget({ color: '#a813f7' });
+const widget = new LibrasWidget();
 
 // Chama ao fechar o stream SSE
 eventSource.addEventListener('done', () => {
@@ -108,11 +105,11 @@ eventSource.addEventListener('done', () => {
 ```jsx
 import { useEffect, useRef } from 'react';
 
-export function useLIBRAS(color = '#0078d4') {
+export function useLIBRAS() {
   const widgetRef = useRef(null);
 
   useEffect(() => {
-    widgetRef.current = new window.LibrasWidget({ color });
+    widgetRef.current = new window.LibrasWidget();
     return () => widgetRef.current?.destroy();
   }, []);
 
@@ -120,7 +117,7 @@ export function useLIBRAS(color = '#0078d4') {
 }
 
 // No componente de chat:
-const libras = useLIBRAS('#a813f7');
+const libras = useLIBRAS();
 
 function handleStreamDone(text) {
   libras.current?.translate(text);
@@ -154,10 +151,9 @@ libras-widget/
 ├── index.html              # Demo interativa (entry do dev server)
 ├── src/
 │   ├── index.js            # Entry point — expoe LibrasWidget global
-│   ├── widget.js           # Classe principal: Shadow DOM, botao, MutationObserver
-│   ├── vlibras-loader.js   # Injecao do VLibras no DOM e controle do painel
-│   ├── translator.js       # Simulacao de selecao de texto para acionar VLibras
-│   └── styles.js           # CSS gerado dinamicamente e injetado no Shadow DOM
+│   ├── widget.js           # Classe principal: inicialização, MutationObserver
+│   ├── vlibras-loader.js   # Injeção do VLibras no DOM e controle do painel
+│   └── translator.js       # Simulação de seleção de texto para acionar VLibras
 ├── dist/                   # Gerado por npm run build
 ├── package.json
 └── vite.config.js          # Build em modo library (UMD + ES)

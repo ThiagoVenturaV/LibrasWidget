@@ -357,7 +357,6 @@
   <span class="cmt">// 2. Inicialize com suas opções</span>
   <span class="kw">const</span> widget = <span class="kw">new</span> <span class="fn">LibrasWidget</span>({
     position:     <span class="str">'bottom-right'</span>,   <span class="cmt">// bottom-right | bottom-left | top-right | top-left</span>
-    color:        <span class="str">'#a813f7'</span>,         <span class="cmt">// cor do botão</span>
     watchSelector:<span class="str">'.bot-message'</span>,    <span class="cmt">// auto-traduz esses elementos quando aparecerem</span>
     autoTranslate: <span class="num">true</span>,
   });
@@ -394,7 +393,6 @@ eventSource.addEventListener(<span class="str">'done'</span>, () =&gt; {
 
   // Inicializa o widget com auto-tradução das mensagens .bot
   const widget = new LibrasWidget({
-    color: '#a813f7',
     position: 'bottom-right',
     watchSelector: '.msg.bot',
     autoTranslate: true,

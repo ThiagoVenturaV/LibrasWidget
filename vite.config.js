@@ -9,7 +9,7 @@ export default defineConfig({
     lib: {
       entry: resolve(__dirname, 'src/index.js'),
       name: 'LibrasWidget',
-      fileName: 'libras-widget',
+      fileName: (format) => `libras-widget.${format === 'es' ? 'js' : 'umd.cjs'}`,
       formats: ['umd', 'es'],
     },
     // Não externaliza nada — bundle é self-contained
