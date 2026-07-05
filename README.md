@@ -37,6 +37,47 @@ import LibrasWidget from './libras-widget.js';
 new LibrasWidget({ position: 'bottom-right' });
 ```
 
+### Como usar em um site novo (Passo a passo)
+
+Se você está criando um site do zero (HTML simples), você pode usar o arquivo compilado UMD:
+
+1. **Copie o arquivo do widget**:
+   Gere o build do projeto rodando `npm run build`. O arquivo UMD estará na pasta `dist/libras-widget.umd.cjs`. Copie esse arquivo para a pasta do seu novo site.
+
+2. **Crie a estrutura do site (`index.html`)**:
+   Importe o arquivo no final do `body` e inicialize-o:
+
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Novo Site</title>
+</head>
+<body>
+
+  <h1>Olá, Mundo!</h1>
+  <p>Esse texto poderá ser traduzido pelo VLibras.</p>
+
+  <!-- 1. Importa o script compilado do widget -->
+  <script src="./libras-widget.umd.cjs"></script>
+  
+  <!-- 2. Inicializa o widget -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      new LibrasWidget({
+        position: 'bottom-right' // 'bottom-right' ou 'bottom-left'
+      });
+    });
+  </script>
+</body>
+</html>
+```
+
+3. **Abra o arquivo no seu navegador**:
+   Basta abrir o arquivo `index.html` em qualquer navegador. O botão azul do VLibras aparecerá no canto configurado.
+
 ---
 
 ## Opções de configuração
