@@ -17,35 +17,53 @@ O LibrasWidget oferece:
 
 ---
 
-## Instalação
+## Instalação e Uso
 
-### Via `<script>` (recomendado para sites existentes)
+Você pode utilizar o **LibrasWidget** de duas formas principais: instalando como uma dependência NPM diretamente do GitHub (recomendado para projetos modernos) ou copiando o arquivo compilado manualmente (para sites HTML simples).
 
-```html
-<!-- Adicione antes do </body> -->
-<script src="libras-widget.umd.cjs"></script>
-<script>
-  new LibrasWidget({ position: 'bottom-right' });
-</script>
-```
+---
 
-### Via módulo ES (projetos com bundler)
+### Opção 1: Via NPM (Recomendado para projetos com React, Vue, Vite, etc.)
 
-```js
-import LibrasWidget from './libras-widget.js';
+Esta é a forma mais limpa e eficiente de integrar o widget, pois ele é gerenciado pelo gerenciador de pacotes do seu projeto.
 
-new LibrasWidget({ position: 'bottom-right' });
-```
+1. **Instale o pacote diretamente do GitHub**:
+   ```bash
+   npm install github:ThiagoVenturaV/LibrasWidget
+   ```
 
-### Como usar em um site novo (Passo a passo)
+2. **Importe e inicialize no seu código**:
+   ```js
+   import LibrasWidget from 'libras-widget';
 
-Se você está criando um site do zero (HTML simples), você pode usar o arquivo compilado UMD:
+   new LibrasWidget({
+     position: 'bottom-right' // 'bottom-right' ou 'bottom-left'
+   });
+   ```
 
-1. **Copie o arquivo do widget**:
-   Gere o build do projeto rodando `npm run build`. O arquivo UMD estará na pasta `dist/libras-widget.umd.cjs`. Copie esse arquivo para a pasta do seu novo site.
+---
 
-2. **Crie a estrutura do site (`index.html`)**:
-   Importe o arquivo no final do `body` e inicialize-o:
+### Opção 2: Uso manual (Para sites HTML simples/estáticos)
+
+Se o seu projeto não utiliza gerenciadores de pacote, você pode buildar o widget e copiar o script compilado:
+
+1. **Clone o repositório e compile o widget**:
+   ```bash
+   # Clone o repositório
+   git clone https://github.com/ThiagoVenturaV/LibrasWidget.git
+   cd LibrasWidget
+
+   # Instale as dependências e compile o build de produção
+   npm install
+   npm run build
+   ```
+   Isso gerará os arquivos prontos para uso na pasta `dist/` (como o `libras-widget.umd.cjs`).
+
+2. **Copie o arquivo para o seu projeto**:
+   Copie o arquivo `libras-widget.umd.cjs` para a pasta do seu site.
+
+3. **Adicione a tag no seu HTML (`index.html`)**:
+   Importe e inicialize o widget antes de fechar a tag `</body>`:
 
 ```html
 <!DOCTYPE html>
@@ -60,7 +78,7 @@ Se você está criando um site do zero (HTML simples), você pode usar o arquivo
   <h1>Olá, Mundo!</h1>
   <p>Esse texto poderá ser traduzido pelo VLibras.</p>
 
-  <!-- 1. Importa o script compilado do widget -->
+  <!-- 1. Importa o script do widget -->
   <script src="./libras-widget.umd.cjs"></script>
   
   <!-- 2. Inicializa o widget -->
@@ -75,8 +93,8 @@ Se você está criando um site do zero (HTML simples), você pode usar o arquivo
 </html>
 ```
 
-3. **Abra o arquivo no seu navegador**:
-   Basta abrir o arquivo `index.html` em qualquer navegador. O botão azul do VLibras aparecerá no canto configurado.
+4. **Abra o site**:
+   Abra o `index.html` no seu navegador para ver o ícone oficial do VLibras funcionando.
 
 ---
 
